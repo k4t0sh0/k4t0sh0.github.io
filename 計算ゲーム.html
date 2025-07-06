@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <meta charset="UTF-8">
+    <title>計算ゲーム</title>
+<head>
+
+<body>
+    <div class="TITLE">
+    <h1>計算ゲーム</h1>
+    <p>次々に出てくる問題を解きましょう！</p>
+    </div>
+    <div>
+        <input type="button" value="ゲーム開始" class="game-start">
+        </div>
+    <div class="my_answer">
+        <div id="question" class="question">ここに問題が表示されます。</div>
+        <input type="number" id="my_answer" placeholder="答えはここに入力">
+    </div>
+</body>
+<style>
+    .TITLE {
+        text-align: center;
+        margin: 0 auto;
+        background:
+        linear-gradient(217deg, rgb(255 0 0 / 80%), rgb(255 0 0 / 0%) 70.71%),
+        linear-gradient(127deg, rgb(0 255 0 / 80%), rgb(0 255 0 / 0%) 70.71%),
+        linear-gradient(336deg, rgb(0 0 255 / 80%), rgb(0 0 255 / 0%) 70.71%);
+        padding: 10px;
+        width: 30%;
+    }
+    .game-start{
+        display: block;
+        margin: 0 auto;
+        width: 200px;
+        height: 50px;
+        font-size: 20px;
+        background-color:hsl(0, 100%, 50%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    .question{
+        text-align: center;
+        font-size: 24px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        padding: 50px;
+        background-color: hsl(0, 0%, 90%);
+        border-radius: 10px;
+        width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .my_answer{
+        font-size: 10px;
+        padding: 50px;
+        border-radius: 10px;
+        text-align: center;
+    }
+</style>
+<script>
+    let level = 1;
+    let correctCount = 0;
+    let questionElement = document.getElementById("question");
+    let myAnswer = document.getElementById("my_answer");
+    function GameStart(){
+        level = 1;
+        correctCount = 0;
+        myAnswer.value = "";
+    }
+</script>
+</head>
+
+</html>

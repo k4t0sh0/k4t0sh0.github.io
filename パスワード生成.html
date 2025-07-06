@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>パスワード作成</title>
+  <style>
+    .checkboxes {
+      margin-bottom: 1em;
+    }
+    .result {
+      font-size: 1.1em;
+      font-weight: bold;
+      word-break: break-word;
+    }
+    .copyButton, .generate {
+      margin: 1em 0;
+      padding: 0.5em 1em;
+      font-size: 1em;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+    }
+    .copyButton {
+      background-color: yellow;
+      color: black;
+    }
+    .generate {
+      background-color: #ff0000;
+      color: white;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .result-container {
+      width: 100%;
+    }
+    h1, p {
+      text-align: center;
+      color: #333;
+    }
+    ul {
+      padding-left: 1em;
+    }
+    li {
+      margin: 0.5em 0;
+    }
+    .inline-copy {
+      margin-left: 1em;
+      padding: 0.2em 0.5em;
+      font-size: 0.9em;
+      background-color: lightblue;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .inline-copy:hover {
+      background-color: #d0e7ff;
+    }
+    .inline-copy:active {
+      background-color: #a0cfff;
+    }
+    .header {
+  display: flex;
+  justify-content: center; /* 水平中央 */
+  align-items: center;     /* 垂直中央 */
+  gap: 1em;
+  margin: 1em 0;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.back-button {
+  font-size: 1em;
+  text-decoration: none;
+  color: #007bff;
+  background-color: #e7f0ff;
+  padding: 0.4em 0.8em;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #d0e7ff;
+}
+
+  </style>
+</head>
+<body>
+  <h1>パスワード生成アプリ</h1>
+  <p>文字種をチェックし、文字数と生成数を入力してパスワードを生成しましょう。</p>
+  <div class="header">
+  <a href="javascript:history.back()" class="back-button">← Homeに戻る</a>
+</div>
+
+  <div class="container">
+    <div class="checkboxes">
+      <label><input type="checkbox" id="uppercase" checked> 大文字</label>
+      <label><input type="checkbox" id="lowercase" checked> 小文字</label>
+      <label><input type="checkbox" id="numbers" checked> 数字</label>
+      <label><input type="checkbox" id="symbols" checked> 記号</label>
+    </div>
+    文字数 <input type="number" id="length" min="4" max="64" value="10"><br>
+    生成数 <input type="number" id="count" min="1" max="20" value="5"><br>
+    <input type="button" id="generate" class="generate" value="生成する">
+    <input type="button" id="btn" class="copyButton" value="すべてコピー">
+    <div class="result-container">
+      <ul id="resultList" class="result"></ul>
+    </div>
+  </div>
+
+  <script>
+    function generatePasswordSet() {
+      const charsets = [
+        { id: "uppercase", chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ" },
+        { id: "lowercase", chars: "abcdefghijklmnopqrstuvwxyz" },
+        { id: "numbers", chars: "1234567890" },
+        { id: "symbols", chars: "!@#$%^&*()-_=+[]{};:,.<>?/|" }
+      ];
+
+      let charset = "";
+      let selectedCharsets = [];
+
+      for (const cs of charsets) {
+        const checkbox = document.getElementById(cs.id);
+        if (checkbox.checked) {
+          charset += cs.chars;
+          selectedCharsets.push(cs.chars);
+        }
+      }
+
+      const lengthValue = parseInt(document.getElementById("length").value);
+      const countValue = parseInt(document.getElementById("count").value);
+      const resultList = document.getElementById("resultList");
+      resultList.innerHTML = "";
+
+      if (isNaN(lengthValue) || lengthValue < 4 || lengthValue > 64) {
+        resultList.innerHTML = "<li>文字数は4〜64の数字を入力してください</li>";
+        return;
+      }
+
+      if (isNaN(countValue) || countValue < 1 || countValue > 20) {
+        resultList.innerHTML = "<li>生成数は1〜20の間で指定してください</li>";
+        return;
+      }
+
+      if (charset === "") {
+        resultList.innerHTML = "<li>1つ以上チェックをしてください</li>";
+        return;
+      }
+
+      for (let j = 0; j < countValue; j++) {
+        let password = "";
+
+        // 各種1文字ずつ
+        for (const s of selectedCharsets) {
+          const rand = Math.floor(Math.random() * s.length);
+          password += s[rand];
+        }
+
+        // 残りをランダムに追加
+        for (let i = password.length; i < lengthValue; i++) {
+          const rand = Math.floor(Math.random() * charset.length);
+          password += charset[rand];
+        }
+
+        // シャッフル
+        const shuffled = password.split('').sort(() => 0.5 - Math.random()).join('');
+
+        // 表示＆ボタン追加
+        const li = document.createElement("li");
+        const span = document.createElement("span");
+        span.textContent = shuffled;
+
+        const button = document.createElement("button");
+        button.textContent = "コピー";
+        button.className = "inline-copy";
+        button.addEventListener("click", () => {
+          navigator.clipboard.writeText(shuffled).then(() => {
+            alert(`「${shuffled}」をコピーしました。`);
+          });
+        });
+
+        li.appendChild(span);
+        li.appendChild(button);
+        resultList.appendChild(li);
+      }
+    }
+
+    document.getElementById("generate").addEventListener("click", generatePasswordSet);
+
+    document.getElementById("btn").addEventListener("click", () => {
+      const results = document.querySelectorAll("#resultList li span");
+      const all = Array.from(results).map(span => span.textContent).join("\n");
+
+      navigator.clipboard.writeText(all).then(
+        () => alert("すべてコピーしました。"),
+        () => alert("コピーに失敗しました。")
+      );
+    });
+  </script>
+</body>
+</html>
+<script>
+  // ページ読み込み時にデフォルトのパスワードを生成
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("generate").click();
+  });
+</script>
+</body>
+</html>

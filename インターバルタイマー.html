@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>インターバルタイマー</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 2em;
+    }
+
+    #timer {
+      font-size: 4em;
+      margin: 1em 0;
+    }
+
+    .status {
+      font-size: 2em;
+      color: green;
+    }
+
+    button {
+      font-size: 1.2em;
+      padding: 0.5em 1em;
+      margin: 0.5em;
+    }
+
+    input {
+      font-size: 1em;
+      width: 4em;
+      text-align: center;
+    }
+
+    div {
+      margin: 1em 0;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #333;
+    }
+
+    h1,
+    div {
+      margin: 0.5em 0;
+    }
+
+    input,
+    button {
+      font-family: inherit;
+      font-size: 1em;
+      margin: 0.2em;
+      padding: 0.3em 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    input:focus,
+    button:focus {
+      outline: none;
+      border-color: #66afe9;
+      box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+    }
+
+    button:hover {
+      background-color: #f0f0f0;
+      cursor: pointer;
+    }
+
+    button:active {
+      background-color: #e0e0e0;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      width: 60px;
+      text-align: center;
+    }
+
+    .status {
+      font-weight: bold;
+      margin-top: 1em;
+      transition: color 0.3s;
+    }
+
+    #timer {
+      font-weight: bold;
+      color: #333;
+      transition: color 0.3s;
+    }
+
+    #timer,
+    .status {
+      font-family: 'Courier New', Courier, monospace;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-family: 'Arial', sans-serif;
+      color: #444;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      background-color: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    h1,
+    div {
+      margin: 0.5em 0;
+    }
+
+    input,
+    button {
+      font-family: inherit;
+      font-size: 1em;
+      margin: 0.2em;
+      padding: 0.3em 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    input:focus,
+    button:focus {
+      outline: none;
+      border-color: #66afe9;
+      box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+    }
+
+    button:hover {
+      background-color: #f0f0f0;
+      cursor: pointer;
+    }
+
+    button:active {
+      background-color: #e0e0e0;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      width: 60px;
+      text-align: center;
+    }
+
+    .status {
+      font-weight: bold;
+      margin-top: 1em;
+      transition: color 0.3s;
+    }
+
+    #timer {
+      font-weight: bold;
+      color: #333;
+      transition: color 0.3s;
+    }
+
+    #timer,
+    .status {
+      font-family: 'Courier New', Courier, monospace;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-family: 'Arial', sans-serif;
+      color: #444;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      background-color: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    h1,
+    div {
+      margin: 0.5em 0;
+    }
+
+    input,
+    button {
+      font-family: inherit;
+      font-size: 1em;
+      margin: 0.2em;
+      padding: 0.3em 0.5em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0.1);
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    input:focus,
+    button:focus {
+      outline: none;
+      border-color: #66afe9;
+      box-shadow: 0 0 5px rgba(102, 175, 233, 0.6);
+    }
+
+    button:hover {
+      background-color: #f0f0f0;
+      cursor: pointer;
+    }
+
+    button:active {
+      background-color: #e0e0e0;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1em;
+    }
+
+    .back-button {
+      font-size: 1em;
+      text-decoration: none;
+      color: #007bff;
+      background-color: #e7f0ff;
+      padding: 0.4em 0.8em;
+      border-radius: 5px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s;
+    }
+
+    .back-button:hover {
+      background-color: #d0e7ff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <h1>インターバルタイマー</h1>
+  </div>
+  <div class="header">
+    <a href="javascript:history.back()" class="back-button">← Homeに戻る</a>
+  </div>
+
+
+  <div>
+    勉強：
+    <input type="number" id="workMin" value="0" /> 分
+    <input type="number" id="workSec" value="20" /> 秒
+  </div>
+  <div>
+    休憩：
+    <input type="number" id="restMin" value="0" /> 分
+    <input type="number" id="restSec" value="10" /> 秒
+  </div>
+
+  <div class="status" id="status">準備OK</div>
+  <div id="timer">00:20</div>
+
+  <button onclick="startTimer()">スタート</button>
+  <button onclick="stopTimer()">ストップ</button>
+  <button onclick="resetTimer()">リセット</button>
+
+  <!-- 音ファイル -->
+  <audio id="beep" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+
+  <script>
+    let workTime = 20;
+    let restTime = 10;
+    let currentTime = workTime;
+    let isWorking = true;
+    let intervalId = null;
+    const beep = document.getElementById("beep");
+
+    function getTimeFromInputs(minId, secId) {
+      const minutes = parseInt(document.getElementById(minId).value) || 0;
+      const seconds = parseInt(document.getElementById(secId).value) || 0;
+      return minutes * 60 + seconds;
+    }
+
+    function updateDisplay() {
+      const minutes = String(Math.floor(currentTime / 60)).padStart(2, '0');
+      const seconds = String(currentTime % 60).padStart(2, '0');
+      document.getElementById("timer").textContent = `${minutes}:${seconds}`;
+    }
+
+    function switchMode() {
+      isWorking = !isWorking;
+      currentTime = isWorking ? workTime : restTime;
+      beep.play();
+      if (isWorking) {
+        document.getElementById("status").textContent = "勉強中！";
+        document.body.style.backgroundColor = "#d7ffd9";
+        document.getElementById("status").style.color = "green";
+      } else {
+        document.getElementById("status").textContent = "休憩中…";
+        document.body.style.backgroundColor = "#d0ecff";
+        document.getElementById("status").style.color = "blue";
+      }
+      updateDisplay();
+    }
+
+    function startTimer() {
+      if (intervalId !== null) return;
+
+      // 分秒から秒に変換
+      workTime = getTimeFromInputs("workMin", "workSec");
+      restTime = getTimeFromInputs("restMin", "restSec");
+      isWorking = true;
+      currentTime = workTime;
+      beep.play();
+      document.getElementById("status").textContent = "勉強中！";
+      document.body.style.backgroundColor = "#d7ffd9";
+      document.getElementById("status").style.color = "green";
+      updateDisplay();
+
+      intervalId = setInterval(() => {
+        currentTime--;
+        updateDisplay();
+        if (currentTime <= 0) {
+          switchMode();
+        }
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(intervalId);
+      intervalId = null;
+      document.getElementById("status").textContent = "停止中";
+      document.body.style.backgroundColor = "white";
+      document.getElementById("status").style.color = "black";
+    }
+
+    function resetTimer() {
+      stopTimer();
+      workTime = getTimeFromInputs("workMin", "workSec");
+      restTime = getTimeFromInputs("restMin", "restSec");
+      isWorking = true;
+      currentTime = workTime;
+      document.getElementById("status").textContent = "リセット済み";
+      document.body.style.backgroundColor = "white";
+      document.getElementById("status").style.color = "gray";
+      updateDisplay();
+    }
+
+    updateDisplay();
+  </script>
+</body>
+
+</html>
